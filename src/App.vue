@@ -2,20 +2,21 @@
 import { useLoadingStore } from '@/stores/loading';
 import { storeToRefs } from 'pinia'
 const store = useLoadingStore();
-const { isLoading } = storeToRefs(store)
+const { isSplineLoading } = storeToRefs(store)
 
 
 import Loading from '../src/components/Loading.vue';
 import Navbar from '../src/components/Navbar.vue';
-import Footer from '../src/components/Footer.vue';
 
 </script>
 
 <template>
+    <metainfo>
+        <template v-slot:title="{ content }">{{ content ? `${content}` : `Youniverse` }}</template>
+    </metainfo>
     <Navbar></Navbar>
-    <router-view></router-view>
-    <Loading v-show="isLoading"></Loading>
-    <Footer></Footer>
+    <router-view v-show="!isSplineLoading"></router-view>
+    <Loading v-show="isSplineLoading"></Loading>
 </template>
 
 <style scoped></style>

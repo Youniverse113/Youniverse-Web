@@ -1,21 +1,35 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
 
-export const useLoadingStore = defineStore('loading', ()=>{
-    const isLoading = ref(false);
 
-    function LoadingStart(){
+
+export const useLoadingStore = defineStore('loading', () => {
+    const route = useRoute();
+    const path = computed(()=>{
+        return route.path;
+    })
+    const isSplineLoading = computed(() => {
+        if(path.value !== '/') return false;
+        return isLoadingSplineViewer.value[0] || isLoadingSplineViewer.value[1] || isLoadingSplineViewer.value[2];
+    })
+    
+    const isLoadingSplineViewer = ref([true, true, true]);
+
+    function LoadingStart(index) {
+        console.log('LoadingStart');
         document.body.style.overflow = 'hidden';
-        console.log(document.body.style.overflow);
-        isLoading.value = true;
+        isLoadingSplineViewer.value[index] = true;
     }
-    function LoadingEnd(){
-        document.body.style.overflow = '';
-        isLoading.value = false;
+    function LoadingEnd(index) {
+        isLoadingSplineViewer.value[index] = false;
+        if(!isLoadingSplineViewer.value[0] && !isLoadingSplineViewer.value[1] && !isLoadingSplineViewer.value[2]){
+            document.body.style.overflow = '';
+        }
     }
 
     return {
-        isLoading,
+        isSplineLoading,
         LoadingStart,
         LoadingEnd
     }

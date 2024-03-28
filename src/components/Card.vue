@@ -5,10 +5,11 @@ import { ref, onMounted, computed, watch } from 'vue';
 const props = defineProps({
     user: Object,
     index: Number,
-    realIndex: Number
+    activeIndex: Number,
+    isScrollRevealOnCard: Boolean
 })
-const realIndex = computed(() => {
-    return props.realIndex
+const activeIndex = computed(() => {
+    return props.activeIndex
 })
 const emit = defineEmits(['slideChange'])
 
@@ -16,22 +17,22 @@ const progress_0 = ref(null);
 const progress_1 = ref(null);
 const progress_2 = ref(null);
 const progress_3 = ref(null);
+const progress_4 = ref(null);
 const progress_state = ref(0);
 
-let progress
+let progress = []
 let width = 0;
 let interval = null;
 onMounted(() => {
-    progress = [progress_0.value, progress_1.value, progress_2.value, progress_3.value]
+    progress = [progress_0.value, progress_1.value, progress_2.value, progress_3.value, progress_4.value]
     progressBarAnimation()
 })
 function progressBarAnimation() {
     interval = setInterval(frame, 1);
     function frame() {
-        if (props.index === props.realIndex) {
+        if (props.index === props.activeIndex && props.isScrollRevealOnCard) {
             if (width >= 100) {
-                if (progress_state.value == 3) {
-                    console.log(width);
+                if (progress_state.value == 4) {
                     emit('slideChange', 1);
                 } else {
                     progress_state.value++;
@@ -45,6 +46,7 @@ function progressBarAnimation() {
     }
 }
 const nextIndex = (n) => {
+    //跳上一Card
     if (progress_state.value + n < 0) {
         return emit('slideChange', -1);
     } else if (progress_state.value + n > props.user.source.length - 1) {
@@ -61,10 +63,9 @@ const nextIndex = (n) => {
     }
 }
 
-watch(realIndex, (newVal, oldVal) => {
+watch(activeIndex, (newVal, oldVal) => {
     if(newVal <= oldVal) {
         if (newVal === props.index && width >= 100) {
-            console.log(width);
             width = 0;
         }
     }
@@ -92,6 +93,9 @@ watch(realIndex, (newVal, oldVal) => {
                 <div class="progress">
                     <div ref="progress_3" class="progress-bar"></div>
                 </div>
+                <div class="progress">
+                    <div ref="progress_4" class="progress-bar"></div>
+                </div>
             </div>
             <div class="grow shrink w-full h-full flex">
                 <div @click="nextIndex(-1)" class="w-1/2 h-full"></div>
@@ -102,7 +106,7 @@ watch(realIndex, (newVal, oldVal) => {
             <div v-show="progress_state == 0" class="absolute w-full h-full flex items-center">
                 <img :src="props.user.source[0]" alt="" class="w-full z-[1]">
                 <img :src="props.user.source[0]" alt=""
-                    class=" absolute z-0 w-full h-full object-cover opacity-20 blur-md"><!-- <img :src="props.user.source[0]" alt="" class=" absolute z-0 w-full h-full object-cover opacity-30"> -->
+                    class=" absolute z-0 w-full h-full object-cover opacity-20"><!-- <img :src="props.user.source[0]" alt="" class=" absolute z-0 w-full h-full object-cover opacity-30"> -->
             </div>
             <div class="w-full h-full" v-show="progress_state == 1">
                 <img :src="props.user.source[1]" alt="" class="w-full h-full object-cover">
@@ -113,7 +117,12 @@ watch(realIndex, (newVal, oldVal) => {
             <div v-show="progress_state == 3" class="w-full h-full flex items-center">
                 <img :src="props.user.source[3]" alt="" class="w-full z-[1]">
                 <img :src="props.user.source[3]" alt=""
-                    class=" absolute z-0 w-full h-full object-cover opacity-20 blur-md">
+                    class=" absolute z-0 w-full h-full object-cover opacity-20">
+            </div>
+            <div v-show="progress_state == 4" class="w-full h-full flex items-center">
+                <img :src="props.user.source[4]" alt="" class="w-full z-[1]">
+                <img :src="props.user.source[4]" alt=""
+                    class=" absolute z-0 w-full h-full object-cover opacity-20">
             </div>
         </div>
 
@@ -122,7 +131,7 @@ watch(realIndex, (newVal, oldVal) => {
 
 <style scoped>
 span {
-    @apply text-[#ffffff]
+    @apply text-[#ffffffcc]
 }
 
 .progress {

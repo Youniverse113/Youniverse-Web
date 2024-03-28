@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Lao+Looped&family=Noto+Sans+TC:wght@100..900&family=Noto+Serif+TC&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -20,8 +20,8 @@ body {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 2px;
+  height: 2px;
   border-radius: 15px;
 }
 
@@ -41,7 +41,25 @@ body {
   background: #555;
 }
 
-a{
+a,h1,h2,h3,h4,h5,h6,p,span,div,li,ul,strong{
   @apply text-[#ffffffcc];
   font-family: "Noto Sans TC", sans-serif;
+}
+h1{
+  @apply text-3xl font-semibold lg:text-4xl;
+}
+h2{
+  @apply text-xl font-medium lg:text-2xl;
+}
+h4{
+  @apply text-sm font-semibold
+}
+p{
+  @apply text-base font-medium text-[#959595];
+}
+strong{
+  @apply text-2xl font-semibold;
+}
+button{
+  @apply bg-spline-button p-2 px-6 rounded-full font-semibold text-sm
 }

@@ -12,6 +12,11 @@ export default {
         'spline-800-focus': '#212225',
         'spline-700-focus': '#202124',
         'spline-button': '#2a2b2e',
+        'spline-button-2': '#6f6f6f',
+        'spline-button-3': '#272626',
+        'spline-button-4': '#535353',
+        'spline-text': '#ffffffcc',
+        'spline-text2': '#ffffff99',
       },
     },
     borderWidth: {
