@@ -17,14 +17,14 @@ const progress_0 = ref(null);
 const progress_1 = ref(null);
 const progress_2 = ref(null);
 const progress_3 = ref(null);
-const progress_4 = ref(null);
+// const progress_4 = ref(null);
 const progress_state = ref(0);
 
 let progress = []
 let width = 0;
 let interval = null;
 onMounted(() => {
-    progress = [progress_0.value, progress_1.value, progress_2.value, progress_3.value, progress_4.value]
+    progress = [progress_0.value, progress_1.value, progress_2.value, progress_3.value]
     progressBarAnimation()
 })
 function progressBarAnimation() {
@@ -32,7 +32,7 @@ function progressBarAnimation() {
     function frame() {
         if (props.index === props.activeIndex && props.isScrollRevealOnCard) {
             if (width >= 100) {
-                if (progress_state.value == 4) {
+                if (progress_state.value == 3) {
                     emit('slideChange', 1);
                 } else {
                     progress_state.value++;
@@ -49,7 +49,7 @@ const nextIndex = (n) => {
     //跳上一Card
     if (progress_state.value + n < 0) {
         return emit('slideChange', -1);
-    } else if (progress_state.value + n > props.user.source.length - 1) {
+    } else if (progress_state.value + n > props.user.source.length - 2) {
         return emit('slideChange', 1);
     }
     if (n > 0) {
@@ -93,9 +93,9 @@ watch(activeIndex, (newVal, oldVal) => {
                 <div class="progress">
                     <div ref="progress_3" class="progress-bar"></div>
                 </div>
-                <div class="progress">
+                <!-- <div class="progress">
                     <div ref="progress_4" class="progress-bar"></div>
-                </div>
+                </div> -->
             </div>
             <div class="grow shrink w-full h-full flex">
                 <div @click="nextIndex(-1)" class="w-1/2 h-full"></div>
@@ -103,10 +103,15 @@ watch(activeIndex, (newVal, oldVal) => {
             </div>
         </div>
         <div class="absolute z-0 top-0 w-full h-full">
-            <div v-show="progress_state == 0" class="absolute w-full h-full flex items-center">
+            <!-- <div v-show="progress_state == 0" class="absolute w-full h-full flex items-center">
                 <img :src="props.user.source[0]" alt="" class="w-full z-[1]">
                 <img :src="props.user.source[0]" alt=""
-                    class=" absolute z-0 w-full h-full object-cover opacity-20"><!-- <img :src="props.user.source[0]" alt="" class=" absolute z-0 w-full h-full object-cover opacity-30"> -->
+                    class=" absolute z-0 w-full h-full object-cover opacity-20">
+            </div> -->
+            <div v-show="progress_state == 0" class="w-full h-full flex items-center">
+                <img :src="props.user.source[3]" alt="" class="w-full z-[1]">
+                <img :src="props.user.source[3]" alt=""
+                    class=" absolute z-0 w-full h-full object-cover opacity-20">
             </div>
             <div class="w-full h-full" v-show="progress_state == 1">
                 <img :src="props.user.source[1]" alt="" class="w-full h-full object-cover">
@@ -115,11 +120,6 @@ watch(activeIndex, (newVal, oldVal) => {
                 <img :src="props.user.source[2]" alt="" class="w-full h-full object-cover">
             </div>
             <div v-show="progress_state == 3" class="w-full h-full flex items-center">
-                <img :src="props.user.source[3]" alt="" class="w-full z-[1]">
-                <img :src="props.user.source[3]" alt=""
-                    class=" absolute z-0 w-full h-full object-cover opacity-20">
-            </div>
-            <div v-show="progress_state == 4" class="w-full h-full flex items-center">
                 <img :src="props.user.source[4]" alt="" class="w-full z-[1]">
                 <img :src="props.user.source[4]" alt=""
                     class=" absolute z-0 w-full h-full object-cover opacity-20">

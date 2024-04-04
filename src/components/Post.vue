@@ -1,19 +1,18 @@
 <script setup>
-import { ref, onMounted, computed, reactive, watch, nextTick, onUpdated } from 'vue';
+import { ref, onMounted, computed, reactive, watch, nextTick, onUpdated, onUnmounted } from 'vue';
 import api from '@/axios.js';
+import Skeleton from '@/components/Skeleton.vue';
 
 const props = defineProps({
     user: Object,
+    isLiked: Boolean,
 })
 const userInfo = computed(() => {
     let user = props.user;
     user.hashtagsInput = ref('')
     return user
 })
-
-
-
-
+const emit = defineEmits(['like', 'returnLike'])
 
 onMounted(() => {
     initProgress()
@@ -23,28 +22,40 @@ onUpdated(() => {
     if (hastagsDivRef.value.scrollHeight > 100) isHastagsDivOverflow.value = true;
     else isHastagsDivOverflow.value = false;
 })
+onUnmounted(() => {
+    clearInterval(interval)
+    window.removeEventListener("scroll", handleScroll)
+})
 
 
 const postRef = ref(null);
+const imageIsLoadedList = ref([false, false, false, false, false, false, false]);
+const imageOnLoad = (index) => {
+    imageIsLoadedList.value[index] = true;
+}
+const isImageAllLoaded = computed(() => {
+    return imageIsLoadedList.value.every((isLoaded) => isLoaded)
+})
+
 let progress = [];
 const progress_state = ref(0);
 const progress_0 = ref(null);
 const progress_1 = ref(null);
 const progress_2 = ref(null);
 const progress_3 = ref(null);
-const progress_4 = ref(null);
-function initProgress() {
-    progress = [progress_0.value, progress_1.value, progress_2.value, progress_3.value, progress_4.value]
-    if (postRef.value.getBoundingClientRect().top <= window.innerHeight * 0.6 && !isPostEnterView.value) {
+function handleScroll() {
+    if (postRef.value.getBoundingClientRect().top <= window.innerHeight && !isPostEnterView.value) {
         progressBarAnimation()
         isPostEnterView.value = true;
     }
-    window.addEventListener('scroll', () => {
-        if (postRef.value.getBoundingClientRect().top <= window.innerHeight * 0.6 && !isPostEnterView.value) {
-            progressBarAnimation()
-            isPostEnterView.value = true;
-        }
-    })
+}
+function initProgress() {
+    progress = [progress_0.value, progress_1.value, progress_2.value, progress_3.value]
+    if (postRef.value.getBoundingClientRect().top <= window.innerHeight && !isPostEnterView.value) {
+        progressBarAnimation()
+        isPostEnterView.value = true;
+    }
+    window.addEventListener('scroll', handleScroll)
 }
 let width = 0;
 let interval = null;
@@ -55,7 +66,7 @@ function progressBarAnimation() {
 }
 function frame() {
     if (width >= 100) {
-        if (progress_state.value == 4) {
+        if (progress_state.value == 3) {
             clearInterval(interval);
         } else {
             progress_state.value++;
@@ -78,9 +89,8 @@ const nextIndex = (n) => {
         width = 0;
         progress_state.value++;
     } else {
-        if (progress_state.value === 4 && progress[progress_state.value].style.width.split('%')[0] >= 100) {
+        if (progress_state.value === 3 && progress[progress_state.value].style.width.split('%')[0] >= 100) {
             progress[progress_state.value].style.width = '0%';
-            console.log('resetttt');
             progressBarAnimation()
         } else {
 
@@ -91,18 +101,28 @@ const nextIndex = (n) => {
     }
 }
 
-// like
+//like
 const likeRef = ref(null);
-const isLiked = ref(false);
 const like = async () => {
-    likeRef.value.children[0].children[0].getAnimations()[0].play();
-    likeRef.value.children[0].children[1].getAnimations()[0].play();
-    isLiked.value = true;
-    userInfo.value.likes++;
-    const res = await api.post('/addLike', {
-        userId: userInfo.value.userId,
-        count: 1,
-    })
+    if (props.isLiked) {
+        emit('returnLike', userInfo.value.userId)
+        likeRef.value.children[0].children[0].getAnimations()[0].play();
+        likeRef.value.children[0].children[1].getAnimations()[0].play();
+        userInfo.value.likes--;
+        const res = await api.post('/addLike', {
+            userId: userInfo.value.userId,
+            count: -1,
+        })
+    } else {
+        emit('like', userInfo.value.userId)
+        likeRef.value.children[0].children[0].getAnimations()[0].play();
+        likeRef.value.children[0].children[1].getAnimations()[0].play();
+        userInfo.value.likes++;
+        const res = await api.post('/addLike', {
+            userId: userInfo.value.userId,
+            count: 1,
+        })
+    }
 }
 
 //hashtags
@@ -145,46 +165,37 @@ const likeHashtag = async (id, index) => {
 
 
 
-let timer;
-function debounce(fn, delay = 500) {
-    // debounce function 最終會回傳一個 function
-    clearTimeout(timer);
-    // 清除之後，再重新計時
-    // 當 delay 時間到時，執行 fn
-    timer = setTimeout(() => {
-        fn();
-    }, delay);
-    return;
-}
+
 
 </script>
 <template>
     <div class="w-full" ref="postRef">
-        <div v-if="user" class="flex items-center mb-2 font-normal text-lg">
+        <div v-if="user" class="flex items-center mb-2 font-normal text-base">
             <span class="!text-lg pr-1 pb-[3px]">@</span>{{ user.username }}
         </div>
         <div class="w-full">
             <div class="w-full relative z-10 h-[180px] md:h-[330px] bg-spline-900 rounded-lg">
                 <div v-if="user" class="relative h-full">
                     <div v-show="progress_state === 0" class="absolute w-full h-full">
-                        <img :src="user.source[0]" alt="" class="w-full h-full object-cover rounded-lg">
+                        <img @load="imageOnLoad(0)" :src="user.source[0]" alt=""
+                            class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div v-show="progress_state === 1" class="absolute w-full h-full flex justify-center">
-                        <img :src="user.source[1]" alt="" class=" relative h-full object-cover z-10">
-                        <img :src="user.source[1]" alt=""
+                        <img @load="imageOnLoad(1)" :src="user.source[1]" alt=""
+                            class=" relative h-full object-cover z-10">
+                        <img @load="imageOnLoad(2)" :src="user.source[1]" alt=""
                             class="w-full h-full object-cover absolute top-0 z-0 opacity-50 rounded-lg">
                     </div>
                     <div v-show="progress_state === 2" class="absolute w-full h-full flex justify-center">
-                        <img :src="user.source[2]" alt="" class=" relative h-full object-cover z-10">
-                        <img :src="user.source[2]" alt=""
+                        <img @load="imageOnLoad(3)" :src="user.source[2]" alt=""
+                            class=" relative h-full object-cover z-10">
+                        <img @load="imageOnLoad(4)" :src="user.source[2]" alt=""
                             class="w-full h-full object-cover absolute top-0 z-0 opacity-50 rounded-lg">
                     </div>
-                    <div v-show="progress_state === 3" class="absolute w-full h-full">
-                        <img :src="user.source[3]" alt="" class="w-full h-full object-cover rounded-lg">
-                    </div>
-                    <div v-show="progress_state === 4" class="absolute w-full h-full flex justify-center">
-                        <img :src="user.source[4]" alt="" class=" relative h-full object-cover z-10">
-                        <img :src="user.source[4]" alt=""
+                    <div v-show="progress_state === 3" class="absolute w-full h-full flex justify-center">
+                        <img @load="imageOnLoad(5)" :src="user.source[3]" alt=""
+                            class=" relative h-full object-cover z-10">
+                        <img @load="imageOnLoad(6)" :src="user.source[3]" alt=""
                             class="w-full h-full object-cover absolute top-0 z-0 opacity-50 rounded-lg">
                     </div>
                 </div>
@@ -202,14 +213,11 @@ function debounce(fn, delay = 500) {
                         <div class="progress">
                             <div ref="progress_3" class="progress-bar"></div>
                         </div>
-                        <div class="progress">
-                            <div ref="progress_4" class="progress-bar"></div>
-                        </div>
                     </div>
                 </div>
                 <div class=" absolute top-0 z-20 w-full h-full flex">
-                    <div @click="nextIndex(-1)" class="grow h-full"></div>
-                    <div @click="nextIndex(1)" class="grow h-full"></div>
+                    <div @click="nextIndex(-1)" class="grow h-full cursor-pointer"></div>
+                    <div @click="nextIndex(1)" class="grow h-full cursor-pointer"></div>
                 </div>
             </div>
             <div class="w-full bg-spline-800-focus relative rounded-xl top-[-15px] z-0 p-3 py-2 flex flex-col gap-3">
@@ -222,7 +230,7 @@ function debounce(fn, delay = 500) {
                             leave-active-class="animate__animated animate__fadeOut">
                             <div @click="likeHashtag(hashtag.id, index)" v-for="(hashtag, index) in userInfo.hashtags"
                                 ref="hashtagsRefs" :key="hashtag.id"
-                                class="inline-block items-center gap-1 px-3 py-1 rounded-full bg-spline-button-4 drop-shadow-lg">
+                                class="inline-block items-center gap-1 px-3 py-1 rounded-full bg-spline-button-4 drop-shadow-lg cursor-pointer">
                                 <div class="flex">
                                     <span>#</span>
                                     <span>{{ hashtag.msg }}</span>
@@ -244,7 +252,7 @@ function debounce(fn, delay = 500) {
                         <div @click.prevent="like"
                             class="drop-shadow-lg shrink-0 flex items-center gap-1 px-4 py-1 rounded-full"
                             ref="likeRef">
-                            <div class="flex items-center">
+                            <div class="flex items-center cursor-pointer">
                                 <font-awesome-icon :icon="[isLiked ? 'fa-solid' : 'fa-regular', 'fa-heart']"
                                     class="mr-1 w-[18px] h-[18px] animate__animated animate__jello"
                                     :class="[isLiked ? 'text-red-900' : '']" />
@@ -264,6 +272,7 @@ function debounce(fn, delay = 500) {
             </div>
         </div>
     </div>
+    <Skeleton v-show="!isImageAllLoaded"></Skeleton>
 </template>
 <style scoped>
 .progress {

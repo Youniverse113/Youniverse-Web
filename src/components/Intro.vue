@@ -6,7 +6,7 @@ import { ref, onMounted } from 'vue';
 
 import { useLoadingStore } from '@/stores/loading';
 const store = useLoadingStore();
-const { LoadingStart, LoadingEnd } = store;
+const { LoadingStart, LoadingEnd, isLoading } = store;
 
 
 const splineViewer = ref(null);
@@ -24,11 +24,17 @@ onMounted(() => {
         }
     })
     splineViewer.value.addEventListener(('load-start'), () => {
-        LoadingStart(0);
+        console.log('loading start');
+        LoadingStart();
     })
     splineViewer.value.addEventListener(('load-complete'), () => {
         splineViewer.value.shadowRoot.querySelector('#logo').style.display = 'none';
-        LoadingEnd(0);
+        console.log('loading end');
+        
+        LoadingEnd();
+        // setTimeout(() => {
+        //     LoadingEnd();
+        // }, 3000);
     })
 })
 

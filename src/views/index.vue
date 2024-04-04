@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import api from '@/axios.js';
 // Import Swiper's required moduless
 import { Swiper, SwiperSlide } from 'swiper/vue';
@@ -7,15 +8,17 @@ import 'swiper/css';
 import 'swiper/css/effect-cards';
 import { EffectCards } from 'swiper/modules';
 //import components
+import Navbar from '@/components/Navbar.vue';
 import Intro from '@/components/Intro.vue';
 import Exhibition_Painting from '@/components/Exhibition_Painting.vue';
 import Exhibition_Roles from '@/components/Exhibition_Roles.vue';
 import Exhibition_Age from '@/components/Exhibition_Age.vue';
-import Card from '@/components/Card.vue';
+import TopUsersCard from '@/components/TopUsersCard.vue';
 import Footer from '@/components/Footer.vue';
 //import ScrollReveal
 import ScrollReveal from 'scrollreveal';
 
+const router = useRouter();
 
 const swiperInstance = ref(null)
 const swiperIsReady = ref(false)
@@ -38,8 +41,8 @@ const activeIndex = computed({
 })
 
 const getTopUsers = async () => {
-    const topUsers_res = await api.post('/getTopUsers', { limit: 5 });
-    topUsers.value = topUsers_res.data.map((user) => {
+    const topUsers_res = await api.post('/getTopUsers', { offset: 0, limit: 5 });
+    topUsers.value = topUsers_res.data.usersList.map((user) => {
         const { userId, username, sourceImage, MonaLisaUrl, PearlGirlUrl, faceSwapUrl, ageUrls, likes, hashtags } = user;
         return {
             userId,
@@ -80,6 +83,7 @@ const topUsers = ref([])
 </script>
 
 <template>
+    <Navbar></Navbar>
     <Intro></Intro>
     <div class="">
         <div class="w-[85%] lg:w-[60%] m-auto mb-[16vh]">
@@ -101,7 +105,7 @@ const topUsers = ref([])
             <p class="py-6 scroll_reveal text-center">來看看誰是人氣王，將你的宇宙分享給朋友們，讓他們為你的宇宙貼上標籤，
                 邀請他們一同進入宇你的世界！</p>
             <div class="flex justify-center items-center">
-                <a href="/exhibition">
+                <a @click="router.push('/exhibition')">
                     <button class="flex items-center justify-between gap-2">查看你的宇宙
                         <font-awesome-icon :icon="['fas', 'arrow-right']"
                             class="text-spline-text w-[16px] h-[16px] bg-spline-button-2 rounded-full p-2" />
@@ -113,7 +117,7 @@ const topUsers = ref([])
             <swiper v-if="topUsers.length" @swiper="onSwiper" :effect="'cards'" :grabCursor="true"
                 :modules="[EffectCards]" class="mySwiper">
                 <swiper-slide v-for="(user, index) in topUsers" :key="user.userId">
-                    <Card v-if="swiperIsReady" @slideChange="slideChange" :user="user" :index="index"
+                    <TopUsersCard v-if="swiperIsReady" @slideChange="slideChange" :user="user" :index="index"
                         :isScrollRevealOnCard="isScrollRevealOnCard" :activeIndex="activeIndex" />
                 </swiper-slide>
             </swiper>

@@ -1,10 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 
-import { useLoadingStore } from '@/stores/loading';
-const store = useLoadingStore();
-const { LoadingStart, LoadingEnd } = store;
-
 onMounted(() => {
 })
 

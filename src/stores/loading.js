@@ -6,31 +6,23 @@ import { useRoute } from 'vue-router';
 
 export const useLoadingStore = defineStore('loading', () => {
     const route = useRoute();
-    const path = computed(()=>{
+    const path = computed(() => {
         return route.path;
     })
-    const isSplineLoading = computed(() => {
-        if(path.value !== '/') return false;
-        return isLoadingSplineViewer.value[0] || isLoadingSplineViewer.value[1] || isLoadingSplineViewer.value[2];
-    })
-    
-    const isLoadingSplineViewer = ref([true, true, true]);
 
-    function LoadingStart(index) {
-        console.log('LoadingStart');
+    const isLoading = ref(false);
+    function LoadingStart() {
+        isLoading.value = true;
         document.body.style.overflow = 'hidden';
-        isLoadingSplineViewer.value[index] = true;
     }
-    function LoadingEnd(index) {
-        isLoadingSplineViewer.value[index] = false;
-        if(!isLoadingSplineViewer.value[0] && !isLoadingSplineViewer.value[1] && !isLoadingSplineViewer.value[2]){
-            document.body.style.overflow = '';
-        }
+    function LoadingEnd() {
+        isLoading.value = false;
+        document.body.style.overflow = '';
     }
 
     return {
-        isSplineLoading,
         LoadingStart,
-        LoadingEnd
+        LoadingEnd,
+        isLoading
     }
 })

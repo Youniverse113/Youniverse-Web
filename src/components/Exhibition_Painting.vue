@@ -4,33 +4,29 @@ import '@splinetool/viewer';
 import { ref, onMounted } from 'vue';
 // import { Application } from '@splinetool/runtime';
 
-import { useLoadingStore } from '@/stores/loading';
-const store = useLoadingStore();
-const { LoadingStart, LoadingEnd } = store;
 
 
-
-const splineViewer = ref(null);
-const splineViewer2 = ref(null);
-const spline_url = ref('https://prod.spline.design/XQCl103dH0ojxExi/scene.splinecode');
-const spline_url2 = ref('https://prod.spline.design/fifzXMm1DlNpiviB/scene.splinecode');
+const splineViewer_MonaLisa = ref(null);
+const splineViewer_PearlGirl = ref(null);
+const splineViewer_MonaLisa_url = ref('https://prod.spline.design/XQCl103dH0ojxExi/scene.splinecode');
+const splineViewer_PearlGirl_url = ref('https://prod.spline.design/fifzXMm1DlNpiviB/scene.splinecode');
 
 onMounted(() => {
-    splineViewer.value.addEventListener(('load-start'), () => {
-        LoadingStart(1);
-    })
-    splineViewer.value.addEventListener(('load-complete'), () => {
-        splineViewer.value.shadowRoot.querySelector('#logo').style.display = 'none';
-        LoadingEnd(1);
+    // splineViewer_MonaLisa.value.addEventListener(('load-start'), () => {
+    //     LoadingStart(1);
+    // })
+    splineViewer_MonaLisa.value.addEventListener(('load-complete'), () => {
+        splineViewer_MonaLisa.value.shadowRoot.querySelector('#logo').style.display = 'none';
+        // LoadingEnd(1);
     })
 
     //2222
-    splineViewer2.value.addEventListener(('load-start'), () => {
-        LoadingStart(2);
-    })
-    splineViewer2.value.addEventListener(('load-complete'), () => {
-        splineViewer2.value.shadowRoot.querySelector('#logo').style.display = 'none';
-        LoadingEnd(2);
+    // splineViewer_PearlGirl.value.addEventListener(('load-start'), () => {
+    //     LoadingStart(2);
+    // })
+    splineViewer_PearlGirl.value.addEventListener(('load-complete'), () => {
+        splineViewer_PearlGirl.value.shadowRoot.querySelector('#logo').style.display = 'none';
+        // LoadingEnd(2);
     })
 })
 
@@ -47,11 +43,11 @@ const ChageIndex = (index) => {
         <div class="w-full h-screen sticky top-0">
             <div class=" absolute top-0 z-[-1] w-full h-screen"
                 :class="[currentIndex === 0 ? 'opacity-100 duration-700' : 'opacity-0 duration-700']">
-                <spline-viewer loading="eager" ref="splineViewer" :url="spline_url"></spline-viewer>
+                <spline-viewer loading="eager" ref="splineViewer_MonaLisa" :url="splineViewer_MonaLisa_url"></spline-viewer>
             </div>
             <div class=" absolute top-0 z-[-1] w-full h-screen"
                 :class="[currentIndex === 1 ? 'opacity-100 duration-700' : 'opacity-0 duration-700']">
-                <spline-viewer loading="eager" ref="splineViewer2" :url="spline_url2"></spline-viewer>
+                <spline-viewer loading="eager" ref="splineViewer_PearlGirl" :url="splineViewer_PearlGirl_url"></spline-viewer>
             </div>
             <div class="w-full absolute top-0">
                 <div
