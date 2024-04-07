@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, nextTick, computed, watch } from 'vue';
+import { ref, onMounted, onUnmounted, nextTick, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
@@ -10,37 +10,42 @@ const path = computed(() => {
 const navbar = ref(null);
 const isShowNavbar = ref(false);
 let breakpoint = null;
+let currentScrollY = 0;
 onMounted(() => {
-    let currentScrollY = 0;
     nextTick(() => {
         breakpoint = document.getElementById('breakpoint')
-        console.log(breakpoint);
     })
-    window.addEventListener('scroll', () => {
-        if (path.value === '/') {
-            if (breakpoint.getBoundingClientRect().top < 0 && window.scrollY < currentScrollY) {
-                isShowNavbar.value = true;
-            } else {
-                isShowNavbar.value = false;
-            }
-            currentScrollY = window.scrollY;
-        } else {
-            isShowNavbar.value = true;
-        }
-    });
+    window.addEventListener('scroll', scrollHandle);
 })
+onUnmounted(() => {
+    window.removeEventListener('scroll', scrollHandle)
+})
+const scrollHandle = () => {
+    if (path.value === '/') {
+        if (breakpoint.getBoundingClientRect().top < 0 && window.scrollY < currentScrollY) {
+            isShowNavbar.value = true;
+        } else {
+            isShowNavbar.value = false;
+        }
+        currentScrollY = window.scrollY;
+    } else {
+        isShowNavbar.value = true;
+    }
+}
 
 watch(path, () => {
     if (path.value !== '/') {
+        console.log('show');
         isShowNavbar.value = true;
     } else {
+        if(!breakpoint) return;
         if (breakpoint.getBoundingClientRect().top < 0 && window.scrollY < currentScrollY) {
             isShowNavbar.value = true;
         } else {
             isShowNavbar.value = false;
         }
     }
-})
+}, { immediate: true })
 
 </script>
 

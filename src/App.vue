@@ -15,5 +15,4 @@ import Loading from '../src/components/Loading.vue';
     <Loading v-show="isLoading"></Loading>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

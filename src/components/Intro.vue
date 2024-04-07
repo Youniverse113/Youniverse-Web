@@ -24,17 +24,11 @@ onMounted(() => {
         }
     })
     splineViewer.value.addEventListener(('load-start'), () => {
-        console.log('loading start');
         LoadingStart();
     })
     splineViewer.value.addEventListener(('load-complete'), () => {
         splineViewer.value.shadowRoot.querySelector('#logo').style.display = 'none';
-        console.log('loading end');
-        
         LoadingEnd();
-        // setTimeout(() => {
-        //     LoadingEnd();
-        // }, 3000);
     })
 })
 

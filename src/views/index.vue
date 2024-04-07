@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, onActivated } from 'vue';
 import { useRouter } from 'vue-router';
 import api from '@/axios.js';
 // Import Swiper's required moduless
@@ -78,6 +78,10 @@ onMounted(async () => {
 
     await getTopUsers();
 })
+onActivated(() => {
+    console.log('onActivated');
+
+})
 
 const topUsers = ref([])
 </script>
@@ -95,8 +99,8 @@ const topUsers = ref([])
                 好玩、好拍，翻轉觀展傳統體驗。</p>
         </div>
         <Exhibition_Painting></Exhibition_Painting>
-        <Exhibition_Roles></Exhibition_Roles>
-        <Exhibition_Age></Exhibition_Age>
+        <Exhibition_Roles class="scroll_reveal"></Exhibition_Roles>
+        <Exhibition_Age class="scroll_reveal"></Exhibition_Age>
     </div>
     <div class="overflow-hidden my-20">
         <div class="w-[85%] lg:w-[60%] m-auto mb-[5vh]">
