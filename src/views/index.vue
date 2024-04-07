@@ -98,7 +98,7 @@ const topUsers = ref([])
         <Exhibition_Roles class="scroll_reveal"></Exhibition_Roles>
         <Exhibition_Age class="scroll_reveal"></Exhibition_Age>
     </div>
-    <div class="overflow-hidden h-screen flex items-center justify-center">
+    <div class="overflow-hidden flex items-center justify-center py-[16vh]">
         <div>
             <div class="w-[85%] lg:w-[60%] m-auto mb-[5vh]">
                 <h1 class="scroll_reveal whitespace-break-spaces text-center">人氣精選，宇你分享

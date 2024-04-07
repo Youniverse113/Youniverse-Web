@@ -25,8 +25,8 @@ onUnmounted(() => {
 <template>
     <div ref="container" class="h-[2000px] bg-[#0f1013]">
         <div
-            class="sticky top-0 w-[85%] lg:w-[60%] m-auto py-[12vh] h-screen flex flex-col gap-4 lg:flex-wrap lg:flex-row">
-            <div class="lg:w-[40%] flex flex-col justify-center">
+            class="sticky top-0 w-[85%] lg:w-[60%] m-auto py-[12vh] h-screen flex flex-col items-center gap-4 md:flex-wrap md:flex-row">
+            <div class="md:w-[40%] flex flex-col justify-center">
                 <div class=" flex items-center gap-4">
                     <h1 class=" text-center font-lao font-normal">III.</h1>
                     <strong class="block leading-8">
@@ -39,8 +39,8 @@ onUnmounted(() => {
                     是緬懷童年的純真，抑或是好奇落幕前鞠躬盡瘁的模樣，一切都能在此得到解答。
                 </p>
             </div>
-            <div class="flex relative justify-center w-full h-0 pb-[100%] lg:w-1/2 lg:pb-[50%] lg:m-auto">
-                <img class=" absolute h-full  object-cover rounded-lg" src="@/assets/age-0.png" alt="">
+            <div class="flex relative justify-center w-[80%] pb-[80%] min-[380px]:w-full h-0 min-[380px]:pb-[100%] md:w-1/2 md:pb-[50%] md:m-auto">
+                <img class=" absolute h-full object-cover rounded-lg" src="@/assets/age-0.png" alt="">
                 <img ref="olderImage" class=" absolute h-full  object-cover rounded-lg" :class="opacityClass"
                     src="@/assets/age-80.png" alt="">
             </div>
@@ -52,12 +52,4 @@ onUnmounted(() => {
 .font-lao {
     font-family: "Noto Sans Lao Looped", sans-serif;
 }
-
-/* @layer utilities {
-    @for $i from 0 through 100 {
-        .opacity-#{$i} {
-            opacity: $i / 100;
-        }
-    }
-} */
 </style>
