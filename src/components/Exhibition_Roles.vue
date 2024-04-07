@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import simpleParallax from 'simple-parallax-js';
 
 onMounted(() => {
 })
@@ -10,7 +9,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="h-[1500px] bg-[#0f1013]">
+    <div class="h-[1000px] bg-[#0f1013]">
         <div class="sticky top-0 w-[85%] lg:w-[60%] h-screen m-auto flex items-center">
             <div>
                 <div class="flex items-center gap-4">

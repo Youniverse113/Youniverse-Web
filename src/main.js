@@ -11,9 +11,9 @@ import { createPinia } from 'pinia';
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faArrowRight, faMagnifyingGlass, faHeart } from "@fortawesome/free-solid-svg-icons";
-import { faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as faHeartRegular, faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
-library.add(faArrowRight, faInstagram, faMagnifyingGlass, faHeart, faHeartRegular);
+library.add(faArrowRight, faInstagram, faMagnifyingGlass, faHeart, faHeartRegular,faEnvelope);
 
 //vue-meta
 import { createMetaManager, defaultConfig } from 'vue-meta'

@@ -102,29 +102,31 @@ const topUsers = ref([])
         <Exhibition_Roles class="scroll_reveal"></Exhibition_Roles>
         <Exhibition_Age class="scroll_reveal"></Exhibition_Age>
     </div>
-    <div class="overflow-hidden my-20">
-        <div class="w-[85%] lg:w-[60%] m-auto mb-[5vh]">
-            <h1 class="scroll_reveal whitespace-break-spaces text-center">人氣精選，宇你分享
-            </h1>
-            <p class="py-6 scroll_reveal text-center">來看看誰是人氣王，將你的宇宙分享給朋友們，讓他們為你的宇宙貼上標籤，
-                邀請他們一同進入宇你的世界！</p>
-            <div class="flex justify-center items-center">
-                <a @click="router.push('/exhibition')">
-                    <button class="flex items-center justify-between gap-2">查看你的宇宙
-                        <font-awesome-icon :icon="['fas', 'arrow-right']"
-                            class="text-spline-text w-[16px] h-[16px] bg-spline-button-2 rounded-full p-2" />
-                    </button>
-                </a>
+    <div class="overflow-hidden h-screen flex items-center justify-center">
+        <div>
+            <div class="w-[85%] lg:w-[60%] m-auto mb-[5vh]">
+                <h1 class="scroll_reveal whitespace-break-spaces text-center">人氣精選，宇你分享
+                </h1>
+                <p class="py-6 scroll_reveal text-center">來看看誰是人氣王，將你的宇宙分享給朋友們，讓他們為你的宇宙貼上標籤，
+                    邀請他們一同進入宇你的世界！</p>
+                <div class="flex justify-center items-center">
+                    <a @click="router.push('/exhibition')">
+                        <button class="flex items-center justify-between gap-2">查看你的宇宙
+                            <font-awesome-icon :icon="['fas', 'arrow-right']"
+                                class="text-spline-text w-[16px] h-[16px] bg-spline-button-2 rounded-full p-2" />
+                        </button>
+                    </a>
+                </div>
             </div>
-        </div>
-        <div class="scroll_reveal_card">
-            <swiper v-if="topUsers.length" @swiper="onSwiper" :effect="'cards'" :grabCursor="true"
-                :modules="[EffectCards]" class="mySwiper">
-                <swiper-slide v-for="(user, index) in topUsers" :key="user.userId">
-                    <TopUsersCard v-if="swiperIsReady" @slideChange="slideChange" :user="user" :index="index"
-                        :isScrollRevealOnCard="isScrollRevealOnCard" :activeIndex="activeIndex" />
-                </swiper-slide>
-            </swiper>
+            <div class="scroll_reveal_card">
+                <swiper v-if="topUsers.length" @swiper="onSwiper" :effect="'cards'" :grabCursor="true"
+                    :modules="[EffectCards]" class="mySwiper">
+                    <swiper-slide v-for="(user, index) in topUsers" :key="user.userId">
+                        <TopUsersCard v-if="swiperIsReady" @slideChange="slideChange" :user="user" :index="index"
+                            :isScrollRevealOnCard="isScrollRevealOnCard" :activeIndex="activeIndex" />
+                    </swiper-slide>
+                </swiper>
+            </div>
         </div>
     </div>
     <Footer></Footer>

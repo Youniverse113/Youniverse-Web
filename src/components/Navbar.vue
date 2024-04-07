@@ -35,7 +35,6 @@ const scrollHandle = () => {
 
 watch(path, () => {
     if (path.value !== '/') {
-        console.log('show');
         isShowNavbar.value = true;
     } else {
         if(!breakpoint) return;
@@ -62,8 +61,8 @@ watch(path, () => {
                 </a>
                 <div class="flex items-center gap-5 mr-5">
                     <a @click="router.push('/')" class=" text-xs font-medium">主頁</a>
-                    <a @click="router.push('/exhibition')" class=" text-xs font-medium">展出</a>
-                    <a @click="router.push('/')" class=" text-xs font-medium">關於我們</a>
+                    <a @click="router.push('/exhibition')" class=" text-xs font-medium">探索</a>
+                    <a @click="router.push('/about')" class=" text-xs font-medium">關於我們</a>
                 </div>
             </div>
         </div>
