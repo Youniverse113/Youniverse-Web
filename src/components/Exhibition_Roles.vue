@@ -27,7 +27,7 @@ onMounted(() => {
                 </p>
                 <div class="flex justify-center py-4">
                     <div class="flex justify-center overflow-hidden max-w-[800px]">
-                        <img class="w-full" src="@/assets/roles2.jpg" alt="">
+                        <img class="w-full" src="@/assets/roles.jpg" alt="">
                     </div>
                 </div>
             </div>

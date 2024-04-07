@@ -1,18 +1,9 @@
 <script setup>
-import { useMeta } from 'vue-meta'
 import Navbar from '@/components/Navbar.vue';
 import Post from '@/components/Post.vue';
 import Skeleton from '@/components/Skeleton.vue';
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue';
 import api from '../axios.js';
-useMeta({
-    title: 'exhibition',
-    meta: [
-        {
-            name: "viewport",
-            content: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no",
-        },]
-})
 onMounted(() => {
     window.scrollTo({ top: 0 })
     getTopUsers();

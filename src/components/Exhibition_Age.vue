@@ -24,25 +24,25 @@ onUnmounted(() => {
 
 <template>
     <div ref="container" class="h-[2000px] bg-[#0f1013]">
-        <div class=" sticky top-0 w-[85%] lg:w-[60%] m-auto py-[16vh] h-screen flex flex-col">
-            <div class=" flex items-center gap-4">
-                <h1 class=" text-center font-lao font-normal">III.</h1>
-                <strong class="block leading-8">
-                    青春猶如昨日<br>
-                    皺紋譜寫故事
-                </strong>
-            </div>
-            <p class="py-6">
-                人生是篇不完美的詩章，時光的流淌任歲月寫滿了臉龐，
-                是緬懷童年的純真，抑或是好奇落幕前鞠躬盡瘁的模樣，一切都能在此得到解答。
-            </p>
-            <div class="flex justify-center py-4 grow shrink">
-                <div class=" relative w-full flex justify-center">
-                    <img class=" absolute h-full  object-cover rounded-lg"
-                        src="@/assets/age-0.png" alt="">
-                    <img ref="olderImage" class=" absolute h-full  object-cover rounded-lg" :class="opacityClass"
-                        src="@/assets/age-80.png" alt="">
+        <div
+            class="sticky top-0 w-[85%] lg:w-[60%] m-auto py-[12vh] h-screen flex flex-col gap-4 lg:flex-wrap lg:flex-row">
+            <div class="lg:w-[40%] flex flex-col justify-center">
+                <div class=" flex items-center gap-4">
+                    <h1 class=" text-center font-lao font-normal">III.</h1>
+                    <strong class="block leading-8">
+                        青春猶如昨日<br>
+                        皺紋譜寫故事
+                    </strong>
                 </div>
+                <p class="py-6">
+                    人生是篇不完美的詩章，時光的流淌任歲月寫滿了臉龐，
+                    是緬懷童年的純真，抑或是好奇落幕前鞠躬盡瘁的模樣，一切都能在此得到解答。
+                </p>
+            </div>
+            <div class="flex relative justify-center w-full h-0 pb-[100%] lg:w-1/2 lg:pb-[50%] lg:m-auto">
+                <img class=" absolute h-full  object-cover rounded-lg" src="@/assets/age-0.png" alt="">
+                <img ref="olderImage" class=" absolute h-full  object-cover rounded-lg" :class="opacityClass"
+                    src="@/assets/age-80.png" alt="">
             </div>
         </div>
     </div>

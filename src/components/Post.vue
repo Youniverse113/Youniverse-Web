@@ -133,6 +133,9 @@ const isExtendHashtagsDiv = ref(false);
 const ExtendHashTagesDiv = () => {
     isExtendHashtagsDiv.value = true;
 }
+const FoldHashTagesDiv = () => {
+    isExtendHashtagsDiv.value = false;
+}
 const AddHashtags = async () => {
     if (userInfo.value.hashtagsInput === '') return
     const newHashtag = {
@@ -141,25 +144,25 @@ const AddHashtags = async () => {
         id: Date.now(),
     }
     try {
+        userInfo.value.hashtagsInput = ''
+        userInfo.value.hashtags.push(newHashtag);
+        hastagsDivRef.value.scrollTop = hastagsDivRef.value.scrollHeight - hastagsDivRef.value.clientHeight
         const res = await api.post('/addHashtag', {
             userId: userInfo.value.userId,
             data: newHashtag,
         })
-        userInfo.value.hashtagsInput = ''
-        userInfo.value.hashtags.push(newHashtag);
-        hastagsDivRef.value.scrollTop = hastagsDivRef.value.scrollHeight - hastagsDivRef.value.clientHeight
     } catch (err) {
         console.log(err);
     }
 }
 const likeHashtag = async (id, index) => {
     hashtagsRefs.value[index].children[0].children[2].getAnimations()[0].play();
+    userInfo.value.hashtags[index].count++;
     const res = await api.post('/likeHashtag', {
         userId: userInfo.value.userId,
         id,
         count: 1,
     })
-    userInfo.value.hashtags = res.data.hashtags;
 }
 
 
@@ -243,6 +246,12 @@ const likeHashtag = async (id, index) => {
                         class="absolute bottom-0 z-20 w-full h-[30px] py-1 px-2 bg-spline-800-focus flex items-center justify-center gap-2">
                         <div class="h-[1px] grow bg-spline-text2"></div>
                         <span>顯示更多</span>
+                        <div class="h-[1px] grow bg-spline-text2"></div>
+                    </div>
+                    <div @click="FoldHashTagesDiv" v-show="isHastagsDivOverflow && isExtendHashtagsDiv"
+                        class="absolute bottom-0 z-20 w-full h-[30px] py-1 px-2 bg-spline-800-focus flex items-center justify-center gap-2">
+                        <div class="h-[1px] grow bg-spline-text2"></div>
+                        <span>隱藏</span>
                         <div class="h-[1px] grow bg-spline-text2"></div>
                     </div>
                 </div>
