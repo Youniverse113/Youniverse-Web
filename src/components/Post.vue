@@ -249,7 +249,7 @@ const likeHashtag = async (id, index) => {
                         <div class="h-[1px] grow bg-spline-text2"></div>
                     </div>
                     <div @click="FoldHashTagesDiv" v-show="isHastagsDivOverflow && isExtendHashtagsDiv"
-                        class="absolute bottom-0 z-20 w-full h-[30px] py-1 px-2 bg-spline-800-focus flex items-center justify-center gap-2">
+                        class="z-20 w-full h-[30px] py-1 px-2 bg-spline-800-focus flex items-center justify-center gap-2">
                         <div class="h-[1px] grow bg-spline-text2"></div>
                         <span>隱藏</span>
                         <div class="h-[1px] grow bg-spline-text2"></div>
