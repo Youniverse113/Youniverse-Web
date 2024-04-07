@@ -94,7 +94,7 @@ const topUsers = ref([])
                 典雅中帶點愜意，逗趣中富含品味，<br>
                 好玩、好拍，翻轉觀展傳統體驗。</p>
         </div>
-        <!-- <Exhibition_Painting></Exhibition_Painting> -->
+        <Exhibition_Painting></Exhibition_Painting>
         <Exhibition_Roles class="scroll_reveal"></Exhibition_Roles>
         <Exhibition_Age class="scroll_reveal"></Exhibition_Age>
     </div>
