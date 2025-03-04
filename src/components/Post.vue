@@ -166,10 +166,6 @@ const likeHashtag = async (id, index) => {
 }
 
 
-
-
-
-
 </script>
 <template>
     <div class="w-full" ref="postRef">
@@ -266,7 +262,7 @@ const likeHashtag = async (id, index) => {
                                     class="mr-1 w-[18px] h-[18px] animate__animated animate__jello"
                                     :class="[isLiked ? 'text-red-900' : '']" />
                                 <span class="animate__animated animate__fadeInUp pb-[2.5px] !text-base">{{
-            userInfo.likes }}</span>
+                                    userInfo.likes }}</span>
                             </div>
                         </div>
                         <span class="px-2 py-1 shrink-0">#</span>

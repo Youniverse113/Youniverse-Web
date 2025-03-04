@@ -23,14 +23,14 @@
     "swiper": "^11.0.6",
     "vue": "^3.4.19",
     "vue-meta": "^3.0.0-alpha.8",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
     "@types/scrollreveal": "^0.0.11",
     "@vitejs/plugin-vue": "^5.0.4",
-    "autoprefixer": "^10.4.17",
-    "postcss": "^8.4.35",
-    "tailwindcss": "^3.4.1",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
     "vite": "^5.1.4"
   }
 }

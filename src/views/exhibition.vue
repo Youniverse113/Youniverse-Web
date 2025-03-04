@@ -18,12 +18,14 @@ const LIMIT = 3;
 let offset = ref(0);
 let hasMore = ref(true);
 const filterType = ref(0);
+function resetSearchSetting() {
+    offset.value = 0;
+    posts.value = [];
+}
 const changeFilter = (index, isFromButton) => {
     if (index === filterType.value && isFromButton) return;
     filterType.value = index;
-    offset.value = 0;
-    hasMore.value = false;
-    posts.value = [];
+    resetSearchSetting()
     if (index === 0) {
         getTopUsers();
     } else {
@@ -72,14 +74,11 @@ const container = ref(null);
 async function scrollHandle() {
     if (window.scrollY + window.screen.height >= container.value.offsetHeight) {
         if (!hasMore.value) return;
+
         if (isGettingUsers.value) return;
 
-        if (searchInput.value !== '') await search();
-        if (filterType.value === 0) {
-            await getTopUsers();
-        } else {
-            await getNewUsers();
-        }
+        if (searchInput.value !== '') return await search()
+        else filterType.value === 0 ? await getTopUsers() : await getNewUsers();
     }
 }
 window.addEventListener('scroll', scrollHandle)
@@ -116,6 +115,7 @@ function debounce(fn, delay = 500) {
     // 清除之後，再重新計時
     // 當 delay 時間到時，執行 fn
     timer = setTimeout(() => {
+        resetSearchSetting()
         fn();
     }, delay)
     return;
@@ -123,9 +123,6 @@ function debounce(fn, delay = 500) {
 const searchInput = ref('');
 const search = async () => {
     isGettingUsers.value = true;
-    offset.value = 0;
-    hasMore.value = false;
-    posts.value = [];
     const searchUsers_res = await api.post('/getSearchUsers', { offset: offset.value, limit: LIMIT, searchInput: searchInput.value });
     hasMore.value = searchUsers_res.data.hasMore;
     offset.value += LIMIT;
@@ -173,11 +170,11 @@ watch(searchInput, () => {
                 :class="{ '!border-spline-text !text-spline-text': filterType }">最新</div>
         </div>
         <div class="w-full flex flex-col gap-4">
-            <Post v-for="(post, index) in posts" :user="post" :isLiked="isLiked[index]" @like="like"
+            <Post v-for="(post, index) in posts" :key="post._id" :user="post" :isLiked="isLiked[index]" @like="like"
                 @returnLike="returnLike">
             </Post>
             <div v-show="isGettingUsers">
-                <Skeleton v-for="index in LIMIT"></Skeleton>
+                <Skeleton v-for="n in 2"></Skeleton>
             </div>
         </div>
     </div>
